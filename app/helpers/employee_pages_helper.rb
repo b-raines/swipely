@@ -4,12 +4,9 @@ module EmployeePagesHelper
     find_tickets(employee_id)
     total_tips = 0
     total_payments = 0
-    @tickets.each do |ticket_id|
-      ticket = Ticket.find_by(ticket_id: ticket_id)
-      unless ticket.nil?
-        total_tips += ticket.tip
-        total_payments += ticket.total_payment 
-      end
+    @tickets.each do |ticket|
+      total_tips += ticket.tip
+      total_payments += ticket.total_payment
     end
     if total_tips == 0 || total_payments == 0
       @average_tip = 0
@@ -21,16 +18,19 @@ module EmployeePagesHelper
   def total_sales(employee_id)
     find_tickets(employee_id)
     @total_sales = 0
-    @tickets.each do |ticket_id|
-      ticket = Ticket.find_by(ticket_id: ticket_id)
-      @total_sales += ticket.total_payment unless ticket.nil?
+    @tickets.each do |ticket|
+      @total_sales += ticket.total_payment
     end
     number_to_currency(@total_sales, precision: 2)
   end
 
   def average_sale(employee_id)
     total_sales(employee_id)
-    @average_sale = @total_sales / @tickets.length
+    if @tickets.length == 0
+      @average_sale = 0
+    else
+      @average_sale = @total_sales / @tickets.length
+    end
     number_to_currency(@average_sale, precision: 2)
   end
 
@@ -42,9 +42,10 @@ module EmployeePagesHelper
   def average_time(employee_id)
     find_tickets(employee_id)
     total_time = 0
-    @tickets.each do |ticket_id|
-      ticket = Ticket.find_by(ticket_id: ticket_id)
-      unless ticket.nil?
+    if @tickets.length == 0
+      @average_time = 0
+    else
+      @tickets.each do |ticket|
         time = ticket.ticket_close_time - ticket.ticket_open_time
         if time < 0
           close_time = ticket.ticket_close_time + 24.hours
@@ -52,8 +53,8 @@ module EmployeePagesHelper
         end
         total_time += time
       end
+      @average_time = total_time / @tickets.length
     end
-    @average_time = total_time / @tickets.length
     @average_time = (@average_time/60).round
   end
 
@@ -61,9 +62,11 @@ module EmployeePagesHelper
     transactions = Transaction.where("description = '#{employee_id}'")
     @tickets = []
     transactions.each do |transaction|
-      @tickets << transaction.ticket_id
+      ticket = Ticket.find_by(ticket_id: transaction.ticket_id)
+      unless ticket.nil?
+        @tickets << ticket
+      end
     end
-    @tickets
   end
 
 end

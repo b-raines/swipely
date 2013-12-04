@@ -9,7 +9,6 @@ class EmployeePagesController < ApplicationController
       end
     end
     @employee_ids = @employee_ids.uniq
-    @tickets = Ticket.all
   end
 
 end
