@@ -56,5 +56,5 @@ production:
   encoding: unicode
   database: swipely_production
   pool: 5
-  username: user
+  username: 
   password:
