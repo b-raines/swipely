@@ -1,21 +1,6 @@
-<table>
-  <tr>
-    <th>Employee</th>
-    <th>Average Tip</th>
-    <th>Average Sale</th>
-    <th>Total Sales</th>
-    <th>Tables Served</th>
-    <th>Average Time</th>
-  </tr>
-  <% @employee_ids.each do |employee_id| %>
-    <tr>
-      <td><%= employee_id %></td>
-      <td><%= average_tip(employee_id) %></td>
-      <td><%= average_sale(employee_id) %></td>
-      <td><%= total_sales(employee_id) %></td>
-      <td><%= tables_served(employee_id) %></td>
-      <td><%= average_time(employee_id).to_s + " minutes" %></td>
-    </tr>
-  <% end %>
-</table>
-      
+
+<div id="average_sales" ></div>
+
+<div id="total_sales" ></div>
+
+<div id="employee_worth" ></div>

@@ -12,6 +12,7 @@ gem 'pg'
 gem 'sass-rails', '~> 4.0.0'
 gem 'zurb-foundation'
 gem 'compass-rails', "~> 2.0.alpha.0"
+gem 'byebug'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -38,10 +39,6 @@ end
 
 group :production do
   gem 'rails_12factor'
-end
-
-group :development, :test do
-  gem 'byebug'
 end
 
 # Use ActiveModel has_secure_password
