@@ -41,7 +41,10 @@ function buildChart(data, chart_id, chart_title, y_axis) {
                 text: y_axis,
             }
         },
-        series: data
+        series: data,
+        credits: {
+            enabled: false
+        }
     });
 }
 
