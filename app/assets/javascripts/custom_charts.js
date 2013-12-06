@@ -15,8 +15,6 @@ function requestData() {
             employee_worth_data.push({name: key, data: [value.employee_worth]});
         });
         buildChart(average_sales_data, 'chart-data', 'Average Sales', '$$$');
-        // buildChart(total_sales_data, 'total_sales', 'Total Sales', '$$$');
-        // buildChart(employee_worth_data, 'employee_worth', 'Employee Worth', '$ / hr')
     });
 }
 
