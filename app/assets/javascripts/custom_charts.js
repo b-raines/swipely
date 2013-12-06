@@ -14,9 +14,9 @@ function requestData() {
             total_sales_data.push({name: key, data: [value.total_sales]});
             employee_worth_data.push({name: key, data: [value.employee_worth]});
         });
-        buildChart(total_sales_data, 'total_sales', 'Total Sales', '$$$');
-        buildChart(average_sales_data, 'average_sales', 'Average Sales', '$$$');
-        buildChart(employee_worth_data, 'employee_worth', 'Employee Worth', '$ / hr')
+        buildChart(average_sales_data, 'chart-data', 'Average Sales', '$$$');
+        // buildChart(total_sales_data, 'total_sales', 'Total Sales', '$$$');
+        // buildChart(employee_worth_data, 'employee_worth', 'Employee Worth', '$ / hr')
     });
 }
 
@@ -42,6 +42,15 @@ function buildChart(data, chart_id, chart_title, y_axis) {
 }
 
 $(document).ready(function() {
-    requestData();      
+    requestData();
+    $("#average-sales").click(function() {
+        buildChart(average_sales_data, 'chart-data', 'Average Sales', '$$$');
+    });
+    $("#total-sales").click(function() {
+        buildChart(total_sales_data, 'chart-data', 'Total Sales', '$$$');
+    });
+    $("#employee-worth").click(function() {
+        buildChart(employee_worth_data, 'chart-data', 'Employee Worth', '$ / hr');
+    });    
 });
 
