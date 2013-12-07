@@ -50,7 +50,7 @@ function buildChart(data, chart_id, chart_title, y_axis) {
                     events: {
                         click: function() {
                             employee = employees_data[this.series.name];
-                            $('.container').prepend('<div class="employee-info"><table class="employee-info"><tr><th>Employee</th><td>'+this.series.name+'<a href="" class="close">x</a></td></tr><tr><th>Average Sales</th><td>$'+employee.average_sale+'</td></tr><tr><th>Total Sales</th><td>$'+employee.total_sales+'</td></tr><tr><th>Employee Worth</th><td>$'+employee.employee_worth+'/hr</td></tr><tr><th>Average Tips</th><td>$'+employee.average_tip+'</td></tr><tr><th>Average Time</th><td>'+employee.average_time+' minutes</td></tr><tr><th>Tables Served</th><td>'+employee.tables_served+'</td></tr></table></div>');
+                            $('#employee-tables').append('<div class="employee-info"><table class="employee-info"><tr><th>Employee</th><td>'+this.series.name+'<a href="" class="close">x</a></td></tr><tr><th>Average Sales</th><td>$'+employee.average_sale+'</td></tr><tr><th>Total Sales</th><td>$'+employee.total_sales+'</td></tr><tr><th>Employee Worth</th><td>$'+employee.employee_worth+'/hr</td></tr><tr><th>Average Tips</th><td>$'+employee.average_tip+'</td></tr><tr><th>Average Time</th><td>'+employee.average_time+' minutes</td></tr><tr><th>Tables Served</th><td>'+employee.tables_served+'</td></tr></table></div>');
                         }
                     }
                 }
