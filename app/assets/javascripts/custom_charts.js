@@ -1,4 +1,5 @@
 var chart; //global
+var employees_data;
 var average_sales_data = [];
 var total_sales_data = [];
 var employee_worth_data = [];
@@ -12,6 +13,7 @@ var tables_served_data = [];
  */
 function requestData() {
     $.getJSON( "api/employees", function(data) {
+        employees_data = data
         $.each(data, function(key, value) {
             average_sales_data.push({name: key, data: [value.average_sale]});
             total_sales_data.push({name: key, data: [value.total_sales]});
@@ -41,6 +43,19 @@ function buildChart(data, chart_id, chart_title, y_axis) {
                 text: y_axis,
             }
         },
+        plotOptions: {
+            series: {
+                cursor: 'pointer',
+                point: {
+                    events: {
+                        click: function() {
+                            employee = employees_data[this.series.name];
+                            $('.container').prepend('<div class="employee-info"><table class="employee-info"><tr><th>Employee</th><td>'+this.series.name+'<a href="" class="close">x</a></td></tr><tr><th>Average Sales</th><td>$'+employee.average_sale+'</td></tr><tr><th>Total Sales</th><td>$'+employee.total_sales+'</td></tr><tr><th>Employee Worth</th><td>$'+employee.employee_worth+'/hr</td></tr><tr><th>Average Tips</th><td>$'+employee.average_tip+'</td></tr><tr><th>Average Time</th><td>'+employee.average_time+' minutes</td></tr><tr><th>Tables Served</th><td>'+employee.tables_served+'</td></tr></table></div>');
+                        }
+                    }
+                }
+            }
+        },
         series: data,
         credits: {
             enabled: false
@@ -67,6 +82,10 @@ $(document).ready(function() {
     });
     $("#tables-served").click(function() {
         buildChart(tables_served_data, 'chart-data', 'Tables Served', '# of Tables');
+    });
+    $(document.body).on('click', '.close', function() {
+        event.preventDefault();
+        $(this).closest('.employee-info').remove();
     });
 });
 
