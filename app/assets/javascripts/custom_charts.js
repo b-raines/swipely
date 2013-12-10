@@ -8,6 +8,19 @@ var average_tips_data = [];
 var average_time_data = [];
 var tables_served_data = [];
 
+var max_avg_sale = 0;
+var min_avg_sale = 0;
+var max_tot_sale = 0;
+var min_tot_sale = 0;
+var max_worth = 0;
+var min_worth = 0;
+var max_tip = 0;
+var min_tip = 0;
+var max_time = 0;
+var min_time = 0;
+var max_tables = 0;
+var min_tables = 0;
+
 var avg_sale_sum = 0;
 var total_sales_sum = 0;
 var employee_worth_sum = 0;
@@ -36,14 +49,26 @@ function requestData() {
             avg_tip_sum += value.average_tip/num_employees;
             avg_time_sum += value.average_time/num_employees;
             tables_served_sum += value.tables_served/num_employees;
-            average_sales_data.push({name: key, data: [value.average_sale]});
-            total_sales_data.push({name: key, data: [value.total_sales]});
-            employee_worth_data.push({name: key, data: [value.employee_worth]});
-            average_tips_data.push({name: key, data: [value.average_tip]});
-            average_time_data.push({name: key, data: [value.average_time]});
-            tables_served_data.push({name: key, data: [value.tables_served]});
+            if (value.average_sale > max_avg_sale) max_avg_sale = value.average_sale;
+            if (value.average_sale < min_avg_sale) min_avg_sale = value.average_sale;
+            if (value.total_sales > max_tot_sale) max_tot_sale = value.total_sales;
+            if (value.total_sales < min_tot_sale) min_tot_sale = value.total_sales;
+            if (value.employee_worth > max_worth) max_worth = value.employee_worth;
+            if (value.employee_worth < min_worth) min_worth = value.employee_worth;
+            if (value.average_tip > max_tip) max_tip = value.average_tip;
+            if (value.average_tip < min_tip) min_tip = value.average_tip;
+            if (value.average_time > max_time) max_time = value.average_time;
+            if (value.average_time < min_time) min_time = value.average_time;
+            if (value.tables_served > max_tables) max_tables = value.tables_served;
+            if (value.tables_served < min_tables) min_tables = value.tables_served;
+            average_sales_data.push({type: 'column', name: key, data: [value.average_sale]});
+            total_sales_data.push({type: 'column', name: key, data: [value.total_sales]});
+            employee_worth_data.push({type: 'column', name: key, data: [value.employee_worth]});
+            average_tips_data.push({type: 'column', name: key, data: [value.average_tip]});
+            average_time_data.push({type: 'column', name: key, data: [value.average_time]});
+            tables_served_data.push({type: 'column', name: key, data: [value.tables_served]});
         });
-        buildChart(average_sales_data, 'chart-data', 'Average Sales', '$$$');
+        buildChart(average_sales_data, 'chart-data', 'Average Sales', '$$$', max_avg_sale, min_avg_sale);
     });
 }
 
@@ -70,11 +95,10 @@ function greenRed(employee, average) {
 ')</span>'+
 **/
 
-function buildChart(data, chart_id, chart_title, y_axis) {
+function buildChart(data, chart_id, chart_title, y_axis, max, min) {
     chart = new Highcharts.Chart({
         chart: {
-            renderTo: chart_id,
-            defaultSeriesType: 'column'
+            renderTo: chart_id
         },
         title: {
             text: chart_title
@@ -85,7 +109,22 @@ function buildChart(data, chart_id, chart_title, y_axis) {
         yAxis: {
             title: {
                 text: y_axis,
-            }
+            },
+            plotLines : [{
+                value : max,
+                color : 'green',
+                width : 2,
+                label : {
+                    text : 'Max: ' + commaSeparateNumber(max)
+                }
+            }, {
+                value : min,
+                color : 'red',
+                width : 2,
+                label : {
+                    text : 'Min: ' + min
+                }
+            }]
         },
         plotOptions: {
             series: {
@@ -110,22 +149,22 @@ function buildChart(data, chart_id, chart_title, y_axis) {
 $(document).ready(function() {
     requestData();
     $("#average-sales").click(function() {
-        buildChart(average_sales_data, 'chart-data', 'Average Sales', '$$$');
+        buildChart(average_sales_data, 'chart-data', 'Average Sales', '$$$', max_avg_sale, min_avg_sale);
     });
     $("#total-sales").click(function() {
-        buildChart(total_sales_data, 'chart-data', 'Total Sales', '$$$');
+        buildChart(total_sales_data, 'chart-data', 'Total Sales', '$$$', max_tot_sale, min_tot_sale);
     });
     $("#employee-worth").click(function() {
-        buildChart(employee_worth_data, 'chart-data', 'Employee Worth', '$ / hr');
+        buildChart(employee_worth_data, 'chart-data', 'Employee Worth', '$ / hr', max_worth, min_worth);
     });   
     $("#average-tips").click(function() {
-        buildChart(average_tips_data, 'chart-data', 'Average Tips', '$$$');
+        buildChart(average_tips_data, 'chart-data', 'Average Tips', '%', max_tip, min_tip);
     });     
     $("#average-time").click(function() {
-        buildChart(average_time_data, 'chart-data', 'Average Time', 'Minutes');
+        buildChart(average_time_data, 'chart-data', 'Average Time', 'Minutes', max_time, min_time);
     });
     $("#tables-served").click(function() {
-        buildChart(tables_served_data, 'chart-data', 'Tables Served', '# of Tables');
+        buildChart(tables_served_data, 'chart-data', 'Tables Served', '# of Tables', max_tables, min_tables);
     });
     $(document.body).on('click', '.close', function() {
         event.preventDefault();
