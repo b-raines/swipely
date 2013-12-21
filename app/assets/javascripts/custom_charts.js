@@ -50,17 +50,17 @@ function requestData() {
             avg_time_sum += value.average_time/num_employees;
             tables_served_sum += value.tables_served/num_employees;
             if (value.average_sale > max_avg_sale) max_avg_sale = value.average_sale;
-            if (value.average_sale < min_avg_sale) min_avg_sale = value.average_sale;
+            if (value.average_sale != 0 && value.average_sale < min_avg_sale || min_avg_sale == 0) min_avg_sale = value.average_sale;
             if (value.total_sales > max_tot_sale) max_tot_sale = value.total_sales;
-            if (value.total_sales < min_tot_sale) min_tot_sale = value.total_sales;
+            if (value.total_sales != 0 && value.total_sales < min_tot_sale || min_tot_sale == 0) min_tot_sale = value.total_sales;
             if (value.employee_worth > max_worth) max_worth = value.employee_worth;
-            if (value.employee_worth < min_worth) min_worth = value.employee_worth;
+            if (value.employee_worth != 0 && value.employee_worth < min_worth || min_worth == 0) min_worth = value.employee_worth;
             if (value.average_tip > max_tip) max_tip = value.average_tip;
-            if (value.average_tip < min_tip) min_tip = value.average_tip;
+            if (value.average_tip != 0 && value.average_tip < min_tip || min_tip == 0) min_tip = value.average_tip;
             if (value.average_time > max_time) max_time = value.average_time;
-            if (value.average_time < min_time) min_time = value.average_time;
+            if (value.average_time != 0 && value.average_time < min_time || min_time == 0) min_time = value.average_time;
             if (value.tables_served > max_tables) max_tables = value.tables_served;
-            if (value.tables_served < min_tables) min_tables = value.tables_served;
+            if (value.tables_served != 0 && value.tables_served < min_tables || min_tables == 0) min_tables = value.tables_served;
             average_sales_data.push({type: 'column', name: key, data: [value.average_sale]});
             total_sales_data.push({type: 'column', name: key, data: [value.total_sales]});
             employee_worth_data.push({type: 'column', name: key, data: [value.employee_worth]});
@@ -113,14 +113,14 @@ function buildChart(data, chart_id, chart_title, y_axis, max, min) {
             plotLines : [{
                 value : max,
                 color : 'green',
-                width : 2,
+                width : 1,
                 label : {
                     text : 'Max: ' + commaSeparateNumber(max)
                 }
             }, {
                 value : min,
                 color : 'red',
-                width : 2,
+                width : 1,
                 label : {
                     text : 'Min: ' + min
                 }

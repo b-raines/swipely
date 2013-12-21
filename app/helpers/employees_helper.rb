@@ -74,9 +74,9 @@ module EmployeesHelper
       tickets.each do |ticket|
         total_sales += ticket.total_payment
       end
-      worth = (@total_sales/total_time).round(2)
+      worth = (total_sales/total_time).round(2)
     end
-    worth
+    worth.nonzero?
   end
 
   def find_tickets(employee_id)
